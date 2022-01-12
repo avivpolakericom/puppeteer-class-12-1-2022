@@ -5,3 +5,6 @@
 
 
 ## <ins>getting started</ins>
+<b>1</b> install puppeteer: npm i puppeteer <br />
+this might take longer than usual because this is quite a heavy package, that downloads its own version of chrome.
+
