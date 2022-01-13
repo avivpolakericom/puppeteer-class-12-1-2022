@@ -30,5 +30,5 @@ not that the argumnets to this function are passed after the callback function w
 you could also take snapshots of the webpage using page.screenshots method which recieves an object with the desired path of the file to store the images. <br />
 this file needs to end with .png 
 
-<b>6</b>
+<b>6</b> <br />
 puppeteer is easily integratable with jest, you could use it for e2e testing, in many different ways and patterns.
