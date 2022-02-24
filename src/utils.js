@@ -93,3 +93,74 @@ function getRandomNum() {
 }
 
 module.exports = { dataToCsv, getTableFromNadlanOne };
+// function optimalPoint(magic, dist) {
+//     // Write your code here
+
+//     for (let i = 0; i < magic.length; i++) {
+//         if (isOptimalPoint(magic, dist)) {
+//             return i;
+//         }
+//         magic = [...magic.slice(1), magic[0]];
+//         dist = [...dist.slice(1), dist[0]];
+//     }
+//     return -1;
+// }
+// const isOptimalPoint = (magic, dist) => {
+//     let sum = 0;
+//     for (let i = 0; i < magic.length; i++) {
+//         sum += magic[i];
+//         sum -= dist[i];
+//         if (sum < 0) {
+//             return false;
+//         }
+//     }
+//     return true;
+// };
+// optimalPoint([3, 5, 2, 4], [2, 10, 3, 2]);
+
+function horizontalCheck(picture) {
+    // Write your code here
+    let tie = [];
+    for (let i = 0; i < picture.length; i++) {
+        const row = picture[i];
+        for (let j = 0; j < picture[i].length; j++) {
+            if (picture[i][j] && picture[i][j + 1]) {
+                const Maincolor = picture[i][j];
+                const rigthColor = picture[i][j + 1] || null;
+                row[j] = Maincolor === rigthColor;
+            }
+        }
+        tie.push(row.slice(0, row.length - 1));
+    }
+    return tie;
+}
+function alingCheck(picture) {
+    // Write your code here
+    let tie = [];
+    for (let i = 0; i < picture.length-1; i++) {
+        const row = picture[i];
+        for (let j = 0; j < picture[i].length; j++) {
+            if(picture[i][j] && picture[i + 1] && picture[i + 1][j]){
+            if (picture[i][j] && picture[i+1][j]) {
+                const Maincolor = picture[i][j];
+                const downColor = picture[i+1][j] || null;
+                row[j] = Maincolor === downColor;
+            }}
+        }
+        tie.push(row);
+    }
+    return tie;
+}
+
+console.log(
+    horizontalCheck([
+        ["a", "b", "c"],
+        ["a", "a", "c"],
+        ["a", "c", "c"],
+    ]),
+    alingCheck([
+        ["a", "b", "c"],
+        ["a", "a", "c"],
+        ["a", "c", "c"],
+    ])
+);
