@@ -3,25 +3,25 @@ password: "1234"
 conpany: ".ERICOM SOFTWARE LTD"
 Attendance:
   "22":
-    "4":
+    "04":
       "01":
-        start: "09"
-        end : "18"
+        start: "0900"
+        end : "1800"
       "02":
-        start: "2902"
+        start: "0900"
         end : "1800"
       "03":
-        start: "3903"
+        start: "0900"
         end : "1800"
       "04":
-        start: "49:04"
-        end : "18:00"
+        start: "0900"
+        end : "1800"
       "05":
-        start: "59:00"
-        end : "18:00"
+        start: "0900"
+        end : "1800"
       "06":
-        start: "09:00"
-        end : "18:00"
+        start: "0900"
+        end : "1800"
       "07":
         start: "09:00"
         end : "18:00"

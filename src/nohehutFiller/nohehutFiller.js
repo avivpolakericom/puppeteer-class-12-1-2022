@@ -69,61 +69,33 @@ const fill = async () => {
 
     await delay(5000);
     // //filling the data
-
+    await page.click(
+        "body > form > table:nth-child(1) > tbody > tr > td > table > tbody > tr > td:nth-child(2) > font:nth-child(4) > a > img"
+    );
+    await delay(2000);
+    const elementHandle = await page.waitForSelector('#FRAME1');
+    const frame = await elementHandle.contentFrame();    
     for (const year in config.Attendance) {
         for (const month in config.Attendance[year]) {
-            for (const day in config.Attendance[year][month]) {
-                //const { start, end } = config.Attendance[year][month][day]
-                const date = `${day}${month}${year}`
-                const start = "0900"
-                const end = "1800"
-                await page.click(
-                    "body > form > table:nth-child(1) > tbody > tr > td > table > tbody > tr > td:nth-child(2) > font:nth-child(4) > a > img"
-                );
-                await delay(5000);
-                //try {
-                // await page.keyboard.down('Control');
-                // await page.keyboard.press('l');
-                // await page.keyboard.up('Control');
-                // await page.keyboard.press('Tab');
+            const sortedDays = Object.keys(config.Attendance[year][month]).sort((a,b)=>Number(a)-Number(b))
+            for (const sortedDay of sortedDays) {
+                const { start, end } = config.Attendance[year][month][sortedDay]
+                const date = `${sortedDay}${month}${year}`
 
-                for (const char of date) {
-                    await page.keyboard.press(char)
-                }
+                //await frame.waitForSelector('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(1) > td:nth-child(2) > font > input[type=text]');
+                await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(1) > td:nth-child(2) > font > input[type=text]',date);
 
-                await page.keyboard.press('Tab');
+                //await frame.waitForSelector('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > font > input[type=text]');
+                await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > font > input[type=text]',start);
 
-                for (const char of start) {
-                    await page.keyboard.press(char)
-                }
+                //await frame.waitForSelector('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > font > input[type=text]');
+                await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > font > input[type=text]',end);
 
-                await page.keyboard.press('Tab');
-                for (const char of end) {
-                    await page.keyboard.press(char)
-                }
-                await page.waitForSelector('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(4) > td:nth-child(2) > font > select');
+                //await frame.waitForSelector('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(4) > td:nth-child(2) > font > select');
+                await frame.select('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(4) > td:nth-child(2) > font > select',"-101");
 
-                await page.select('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(4) > td:nth-child(2) > font > select', "-101")
-
-                await delay(50000)
-
-                //await page.keyboard.press("")
-
-                // page.keyboard.press("0")
-                // page.keyboard.press("1")
-                // page.keyboard.press("/")
-                // page.keyboard.press("/")
-
-
-
-                // await page.type("body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > font > input[type=text]", start, {
-                //     delay: getRandomNum(),
-                // });
-                // await page.type("body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > font > input[type=text]", end, {
-                //     delay: getRandomNum(),
-                // });
-                 await page.select('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(4) > td:nth-child(2) > font > select', "-101")
-
+                //await frame.waitForSelector('body > form > table:nth-child(3) > tbody > tr > td > table > tbody > tr > td.bttn2 > font > a');
+                await frame.click('body > form > table:nth-child(3) > tbody > tr > td > table > tbody > tr > td.bttn2 > font > a');
             }
         }
     }
