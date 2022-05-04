@@ -23,7 +23,7 @@ const fill = async () => {
     await page.click(
         "body > form > button"
     );
-    await delay(5000);
+    await delay(3000);
     try {
         await page.click(
             "body > form > table > tbody > tr:nth-child(2) > td.last2 > font > a"
@@ -43,6 +43,7 @@ const fill = async () => {
             await page.click(
                 "body > form > table:nth-child(1) > tbody > tr > td > table > tbody > tr > td:nth-child(1) > a > img"
             );
+
         } catch (error) {
             //english
             await page.select('body > form > table:nth-child(2) > tbody > tr > td > div > table:nth-child(1) > tbody > tr:nth-child(1) > td:nth-child(2) > font > select', 'ericom')
@@ -60,78 +61,57 @@ const fill = async () => {
                 "body > form > table > tbody > tr:nth-child(2) > td.last1 > font > a > span"
             );
         }
-
-
     }
+    await delay(2000)
+
     await page.waitForSelector('body > form > table:nth-child(1) > tbody > tr > td > table > tbody > tr > td:nth-child(2) > font:nth-child(4) > a > img');
     // //filling the data
     await page.click(
         "body > form > table:nth-child(1) > tbody > tr > td > table > tbody > tr > td:nth-child(2) > font:nth-child(4) > a > img"
     );
-    await delay(5000)
+    await delay(3000)
     const elementHandle = await page.waitForSelector('#FRAME1');
-    const frame = await elementHandle.contentFrame();    
+    const frame = await elementHandle.contentFrame();
     for (const year in config.Attendance) {
         for (const month in config.Attendance[year]) {
-            const sortedDays = Object.keys(config.Attendance[year][month]).sort((a,b)=>Number(a)-Number(b))
+            const sortedDays = Object.keys(config.Attendance[year][month]).sort((a, b) => Number(a) - Number(b))
             for (const sortedDay of sortedDays) {
-                const { start, end } = config.Attendance[year][month][sortedDay]
-                const date = `${sortedDay}${month}${year}`
                 try {
-                    await delay(2000);
-                    await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(1) > td:nth-child(2) > font > input[type=text]',date);
-                    await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > font > input[type=text]',start);
-                    await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > font > input[type=text]',end);
-                    await frame.select('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(4) > td:nth-child(2) > font > select',"-101");
-                    await frame.click('body > form > table:nth-child(3) > tbody > tr > td > table > tbody > tr > td.bttn2 > font > a');   
+                    const { start, end } = config.Attendance[year][month][sortedDay]
+                    const date = `${sortedDay}${month}${year}`
+                    try {
+                        await fillDay(frame, date, start, end, true)
+                    } catch (error) {
+                        await page.click(
+                            "body > form > table:nth-child(1) > tbody > tr > td > table > tbody > tr > td:nth-child(2) > font:nth-child(4) > a > img"
+                        );
+                        await fillDay(frame, date, start, end, true)
+                    }                    
                 } catch (error) {
-                    await page.click(
-                        "body > form > table:nth-child(1) > tbody > tr > td > table > tbody > tr > td:nth-child(2) > font:nth-child(4) > a > img"
-                    );
-                    await delay(2000);
-                    await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(1) > td:nth-child(2) > font > input[type=text]',date);
-                    await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > font > input[type=text]',start);
-                    await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > font > input[type=text]',end);
-                    await frame.select('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(4) > td:nth-child(2) > font > select',"-101");
-                    await frame.click('body > form > table:nth-child(3) > tbody > tr > td > table > tbody > tr > td.bttn2 > font > a');    
+                    console.log(`could not fill ${date}`)
                 }
+                  
             }
         }
     }
-
-
-    ///.///////
-
-
-
-    // await delay(15000);
-    // await page.keyboard.press("Escape");
-    // await page.click("#tabs > ul > li:nth-child(2)");
-    // await delay(15000);
-    // await page.type("#CityList_chosen > ul > li > input", "פתח תקווה", {
-    //     delay: getRandomNum(),
-    // });
-    // await page.keyboard.press("Enter");
-    // await delay(5000);
-    // await page.click("#search");
-    // await delay(15000);
-    // await page.click("#tab-2 > a > i");
-    // await delay(3000);
-    // await page.click("#tab-3 > a > i");
-    // await delay(3000);
-    // await page.click("#tab-6 > a > i");
-    // await delay(5000);
-
-    // const data = await page.evaluate(() => {
-    //     const rows = document.querySelectorAll("#prop-grid tr");
-    //     return Array.from(rows, (row) => {
-    //         const columns = row.querySelectorAll("td");
-    //         return Array.from(columns, (column) => column.innerText);
-    //     });
-    // });
-    // return data;
 };
 fill()
+
+
+const fillDay = async (frame, date, start, end, fake = false) => {
+    await delay(2000);
+    await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(1) > td:nth-child(2) > font > input[type=text]', date);
+    await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > font > input[type=text]', start);
+    await frame.type('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > font > input[type=text]', end);
+    await frame.select('body > form > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(4) > td:nth-child(2) > font > select', "-101");
+    if (fake) {
+        await frame.click('body > form > table:nth-child(3) > tbody > tr > td > table > tbody > tr > td.bttn2 > font > a');
+    }
+    else {
+        await frame.click('body > form > table:nth-child(3) > tbody > tr > td > table > tbody > tr > td.bttn1 > font > a');
+    }
+    //todo: add a flag if done to a list.
+}
 function getRandomNum() {
     return Math.random() * 200;
 }
